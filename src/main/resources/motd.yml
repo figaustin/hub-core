@@ -1,0 +1,6 @@
+motd:
+  - 'Welcome back %player%'
+  - 'Website: server.com'
+  - 'Discord: server.discord'
+  - 'Store: server.store.com'
+  - 'Info: New game mode'
