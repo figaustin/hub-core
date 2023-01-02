@@ -39,6 +39,7 @@
                         </goals>
                         <configuration>
                             <createDependencyReducedPom>false</createDependencyReducedPom>
+                            <outputDirectory>D:\MyStuff\plugin test server\plugins</outputDirectory>
                         </configuration>
                     </execution>
                 </executions>

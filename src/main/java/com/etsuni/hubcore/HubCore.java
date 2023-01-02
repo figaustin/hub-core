@@ -1,5 +1,10 @@
 package com.etsuni.hubcore;
 
+import com.etsuni.hubcore.commands.UtilityCommands;
+import com.etsuni.hubcore.commands.WarpCommands;
+import com.etsuni.hubcore.events.CancelledEvents;
+import com.etsuni.hubcore.events.ChatEvents;
+import com.etsuni.hubcore.events.JoinLeaveEvents;
 import com.etsuni.hubcore.events.KeepDayTime;
 import org.bukkit.configuration.InvalidConfigurationException;
 import org.bukkit.configuration.file.FileConfiguration;
@@ -16,13 +21,31 @@ public final class HubCore extends JavaPlugin {
     private File motdFile;
     private FileConfiguration motdConfig;
 
+    private File warpsFile;
+    private FileConfiguration warpsConfig;
+
+    private final UtilityCommands utilityCommands = new UtilityCommands();
+
     public static HubCore plugin;
 
     @Override
     public void onEnable() {
         plugin = this;
+        createConfigs();
 
+        this.getCommand("fly").setExecutor(utilityCommands);
+        this.getCommand("speed").setExecutor(utilityCommands);
+        this.getCommand("skull").setExecutor(utilityCommands);
+        this.getCommand("setwarp").setExecutor(new WarpCommands(this));
+        this.getCommand("delwarp").setExecutor(new WarpCommands(this));
+        this.getCommand("warp").setExecutor(new WarpCommands(this));
+        this.getCommand("warps").setExecutor(new WarpCommands(this));
 
+        this.getServer().getPluginManager().registerEvents(new ChatEvents(), this);
+        this.getServer().getPluginManager().registerEvents(new CancelledEvents(), this);
+        this.getServer().getPluginManager().registerEvents(new JoinLeaveEvents(), this);
+
+        dayTime();
     }
 
     @Override
@@ -34,7 +57,7 @@ public final class HubCore extends JavaPlugin {
         motdFile = new File(getDataFolder(), "motd.yml");
         if(!motdFile.exists()) {
             motdFile.getParentFile().mkdirs();
-            saveResource("config.yml", false);
+            saveResource("motd.yml", false);
         }
 
         motdConfig = new YamlConfiguration();
@@ -45,19 +68,44 @@ public final class HubCore extends JavaPlugin {
             e.printStackTrace();
         }
 
+        warpsFile = new File(getDataFolder(), "warps.yml");
+        if(!warpsFile.exists()) {
+            warpsFile.getParentFile().mkdirs();
+            saveResource("warps.yml", false);
+        }
+
+        warpsConfig = new YamlConfiguration();
+
+        try {
+            warpsConfig.load(warpsFile);
+        } catch (IOException | InvalidConfigurationException e) {
+            e.printStackTrace();
+        }
+
+
+
     }
 
     public FileConfiguration getMotdConfig() {
         return this.motdConfig;
     }
 
+    public FileConfiguration getWarpsConfig() {
+        return this.warpsConfig;
+    }
 
 
+    public void saveCfgs() {
+        try {
+            motdConfig.save(motdFile);
+            warpsConfig.save(warpsFile);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
 
 
     public void dayTime() {
-        BukkitScheduler scheduler = getServer().getScheduler();
-
         BukkitTask keepDayTime = new KeepDayTime(this).runTaskTimer(this, 0, 100L);
     }
 }

@@ -1,3 +1,20 @@
 name: HubCore
 version: '${project.version}'
 main: com.etsuni.hubcore.HubCore
+commands:
+  fly:
+    aliases: [flight]
+    description: Toggles flight for command sender
+  speed:
+    aliases: [flyspeed, walkspeed]
+    description: Changes fly speed if flying, changes walk speed if walking
+  skull:
+    description: Gives sender the skull of the specified player
+  setwarp:
+    description: Sets a new warp
+  delwarp:
+    description: Deletes a warp
+  warp:
+    description: Teleport to a warp
+  warps:
+    description: Get list of warps
