@@ -6,6 +6,7 @@ import com.etsuni.hubcore.events.CancelledEvents;
 import com.etsuni.hubcore.events.ChatEvents;
 import com.etsuni.hubcore.events.JoinLeaveEvents;
 import com.etsuni.hubcore.events.KeepDayTime;
+import org.bukkit.Bukkit;
 import org.bukkit.configuration.InvalidConfigurationException;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
@@ -20,9 +21,10 @@ public final class HubCore extends JavaPlugin {
 
     private File motdFile;
     private FileConfiguration motdConfig;
-
     private File warpsFile;
     private FileConfiguration warpsConfig;
+    private File scoreboardFile;
+    private FileConfiguration scoreboardConfig;
 
     private final UtilityCommands utilityCommands = new UtilityCommands();
 
@@ -43,7 +45,7 @@ public final class HubCore extends JavaPlugin {
 
         this.getServer().getPluginManager().registerEvents(new ChatEvents(), this);
         this.getServer().getPluginManager().registerEvents(new CancelledEvents(), this);
-        this.getServer().getPluginManager().registerEvents(new JoinLeaveEvents(), this);
+        this.getServer().getPluginManager().registerEvents(new JoinLeaveEvents(this), this);
 
         dayTime();
     }
@@ -82,6 +84,20 @@ public final class HubCore extends JavaPlugin {
             e.printStackTrace();
         }
 
+        scoreboardFile = new File(getDataFolder(), "scoreboard.yml");
+        if(!scoreboardFile.exists()) {
+            scoreboardFile.getParentFile().mkdirs();
+            saveResource("scoreboard.yml", false);
+        }
+
+        scoreboardConfig = new YamlConfiguration();
+
+        try {
+            scoreboardConfig.load(scoreboardFile);
+        } catch (IOException | InvalidConfigurationException e) {
+            e.printStackTrace();
+        }
+
 
 
     }
@@ -92,6 +108,10 @@ public final class HubCore extends JavaPlugin {
 
     public FileConfiguration getWarpsConfig() {
         return this.warpsConfig;
+    }
+
+    public FileConfiguration getScoreboardConfig() {
+        return this.scoreboardConfig;
     }
 
 

@@ -1,6 +1,7 @@
 name: HubCore
 version: '${project.version}'
 main: com.etsuni.hubcore.HubCore
+depend: [PlaceholderAPI]
 commands:
   fly:
     aliases: [flight]
