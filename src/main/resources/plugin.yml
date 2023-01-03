@@ -1,21 +1,93 @@
 name: HubCore
 version: '${project.version}'
 main: com.etsuni.hubcore.HubCore
+author: Etsuni
 depend: [PlaceholderAPI]
 commands:
   fly:
     aliases: [flight]
     description: Toggles flight for command sender
+    permission: hub.fly
   speed:
     aliases: [flyspeed, walkspeed]
     description: Changes fly speed if flying, changes walk speed if walking
+    permission: hub.speed
   skull:
     description: Gives sender the skull of the specified player
+    permission: hub.skull
   setwarp:
     description: Sets a new warp
+    permission: hub.setwarp
   delwarp:
     description: Deletes a warp
+    permission: hub.delwarp
   warp:
     description: Teleport to a warp
+    permission: hub.warp
   warps:
     description: Get list of warps
+    permission: hub.warps
+  setspawn:
+    description: Set the world spawn
+    permission: hub.setspawn
+  spawn:
+    description: Go to spawn
+    permission: hub.spawn
+  gamemode:
+    description: Change your gamemode
+    permission: hub.gamemode
+  restartserver:
+    description: Restarts this server
+    permission: hub.restart
+  rename:
+    description: Set a nickname for a player
+    permission: hub.rename
+  namehistory:
+    description: See a player's name history
+    permission: hub.namehistory
+permissions:
+  hub.*:
+    description: Grants player access to all permissions
+    children:
+      hub.fly: true
+      hub.speed: true
+      hub.skull: true
+      hub.setwarp: true
+      hub.delwarp: true
+      hub.warp: true
+      hub.warps: true
+      hub.setspawn: true
+      hub.spawn: true
+      hub.gamemode: true
+      hub.restart: true
+      hub.rename: true
+      hub.rename.others: true
+      hub.namehistory: true
+  hub.fly:
+    description: Allows player to fly
+  hub.speed:
+    description: Allows player to change their speed
+  hub.skull:
+    description: Allows player to get a player's skull
+  hub.setwarp:
+    description: Allows player to set a new warp
+  hub.delwarp:
+    description: Allows player to delete warps
+  hub.warp:
+    description: Allows a player to warp
+  hub.warps:
+    description: Allows player to see all warps
+  hub.setspawn:
+    description: Allows player to set the hub spawn
+  hub.spawn:
+    description: Allows player to teleport to spawn
+  hub.gamemode:
+    description: Allows player to change their gamemode
+  hub.restart:
+    description: Allows player to restart the server
+  hub.rename:
+    description: Allows player to give themselves a nickname
+  hub.rename.others:
+    description: Allows player to rename other players
+  hub.namehistory:
+    description: Allows player to see a players name history

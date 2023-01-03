@@ -1,0 +1,12 @@
+database:
+  host: localhost
+  port: 3306
+  database: hub
+  user: root
+  password: root
+
+settings:
+  first_join_msg: "Hello, %player% and welcome to us. (#%join_id%)"
+
+spawn:
+  location:
