@@ -1,10 +1,10 @@
 package com.etsuni.hubcore.commands;
 
 import com.etsuni.hubcore.HubCore;
-import com.etsuni.hubcore.utils.DBUtils;
-import com.etsuni.hubcore.utils.PlayerName;
+import com.etsuni.hubcore.menus.MenuManager;
+import utils.DBUtils;
+import utils.PlayerName;
 import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -37,19 +37,29 @@ public class NameCommands implements CommandExecutor {
                     if(Bukkit.getPlayer(args[0]) != null) {
                         DBUtils dbUtils = new DBUtils(plugin);
                         Optional<List<PlayerName>> namesList = dbUtils.getPlayerNameHistory(Bukkit.getPlayer(args[0]));
-                        sender.sendMessage(ChatColor.GOLD + "Name history for " + args[0]);
+                        sender.sendMessage("Name history for " + args[0]);
 
                         String allNames = "All Names: ";
                         for(PlayerName name : namesList.get()) {
-                            allNames = allNames.concat(name + ", ");
+                            allNames = allNames.concat(name.getName() + ", ");
                         }
 
                         String nickNames = "10 recent nicknames: ";
-                        for(int i = 0; i < 10; i++) {
-                            nickNames = nickNames.concat(namesList.get().get(i) + ", ");
+                        int counter = 0;
+                        for(PlayerName name : namesList.get()) {
+                            if(name.getNickname() && counter < 10) {
+                                nickNames = nickNames.concat(name.getName() + ", ");
+                                counter++;
+                            }
                         }
+                        sender.sendMessage(allNames);
+                        sender.sendMessage(nickNames);
                     }
                 }
+            }
+            else if(command.getName().equalsIgnoreCase("gameselector")) {
+                MenuManager menuManager = new MenuManager(plugin);
+                menuManager.openGameSelector(((Player) sender).getPlayer());
             }
         }
 

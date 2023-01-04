@@ -5,6 +5,7 @@ import com.etsuni.hubcore.events.CancelledEvents;
 import com.etsuni.hubcore.events.ChatEvents;
 import com.etsuni.hubcore.events.JoinLeaveEvents;
 import com.etsuni.hubcore.events.KeepDayTime;
+import com.etsuni.hubcore.menus.MenuEvent;
 import com.mysql.cj.jdbc.MysqlConnectionPoolDataSource;
 import com.mysql.cj.jdbc.MysqlDataSource;
 import org.bukkit.Bukkit;
@@ -34,6 +35,8 @@ public final class HubCore extends JavaPlugin {
     private FileConfiguration scoreboardConfig;
     private File configFile;
     private FileConfiguration config;
+    private File menusFile;
+    private FileConfiguration menusConfig;
 
     private final UtilityCommands utilityCommands = new UtilityCommands();
     private final WarpCommands warpCommands = new WarpCommands(this);
@@ -65,12 +68,14 @@ public final class HubCore extends JavaPlugin {
         this.getCommand("gms").setExecutor(gamemodeCommands);
         this.getCommand("gma").setExecutor(gamemodeCommands);
         this.getCommand("gmsp").setExecutor(gamemodeCommands);
+        this.getCommand("gameselector").setExecutor(nameCommands);
         //SERVER RESTART COMMAND
 
 
         this.getServer().getPluginManager().registerEvents(new ChatEvents(), this);
         this.getServer().getPluginManager().registerEvents(new CancelledEvents(), this);
         this.getServer().getPluginManager().registerEvents(new JoinLeaveEvents(this), this);
+        this.getServer().getPluginManager().registerEvents(new MenuEvent(this), this);
 
         dayTime();
 
@@ -195,6 +200,20 @@ public final class HubCore extends JavaPlugin {
             e.printStackTrace();
         }
 
+        menusFile = new File(getDataFolder(), "menus.yml");
+        if(!menusFile.exists()) {
+            menusFile.getParentFile().mkdirs();
+            saveResource("menus.yml", false);
+        }
+
+        menusConfig = new YamlConfiguration();
+
+        try {
+            menusConfig.load(menusFile);
+        } catch (IOException | InvalidConfigurationException e) {
+            e.printStackTrace();
+        }
+
 
 
     }
@@ -213,6 +232,10 @@ public final class HubCore extends JavaPlugin {
 
     public FileConfiguration getScoreboardConfig() {
         return this.scoreboardConfig;
+    }
+
+    public FileConfiguration getMenusConfig() {
+        return this.menusConfig;
     }
 
 

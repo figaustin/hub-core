@@ -61,6 +61,8 @@ commands:
     aliases: [gm3]
     description: Sets your gamemode to spectator
     permission: hub.gmsp
+  gameselector:
+    description: Testing command
 permissions:
   hub.*:
     description: Grants player access to all permissions

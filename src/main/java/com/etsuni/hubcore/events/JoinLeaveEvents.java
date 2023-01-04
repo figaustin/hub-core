@@ -3,7 +3,7 @@ package com.etsuni.hubcore.events;
 import com.etsuni.hubcore.HubCore;
 import com.etsuni.hubcore.HubScoreboard;
 import com.etsuni.hubcore.commands.CommandUtils;
-import com.etsuni.hubcore.utils.DBUtils;
+import utils.DBUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
@@ -11,10 +11,6 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
-
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.SQLException;
 
 public class JoinLeaveEvents implements Listener {
 

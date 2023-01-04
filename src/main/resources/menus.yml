@@ -1,0 +1,33 @@
+gameselector:
+  size: 54
+  title: '&2Game Selector'
+  items:
+    pvp:
+      position: 0
+      item: DIAMOND_SWORD
+      name: '&6PvP'
+      description:
+        - '&6PvP'
+      is_player_head: false
+      command: '/server pvp'
+    head:
+      position: 4
+      item: SKULL_ITEM
+      name: '&6%player_displayname%'
+      description:
+        - 'Player'
+      is_player_head: true
+
+
+lobbyselector:
+  size: 27
+    title: '&2Lobby Selector'
+    current_lobby_item: IRON_BLOCK
+    other_lobbies_item: GOLD_BLOCK
+    items:
+      lobby1:
+        position: 0
+        name: '&6Lobby 1'
+        is_player_head: false
+        command: '/server lobby1'
+

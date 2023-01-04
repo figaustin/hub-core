@@ -1,4 +1,4 @@
-package com.etsuni.hubcore.utils;
+package utils;
 
 import com.etsuni.hubcore.HubCore;
 import org.bukkit.entity.Player;

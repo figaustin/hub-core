@@ -23,7 +23,7 @@ public class UtilityCommands implements CommandExecutor {
             }
 
             //SPEED COMMAND
-            if(command.getName().equalsIgnoreCase("speed")) {
+            else if(command.getName().equalsIgnoreCase("speed")) {
                 if(args.length > 0) {
                     try {
                         if (player.isFlying()) {
@@ -51,7 +51,8 @@ public class UtilityCommands implements CommandExecutor {
                 }
             }
 
-            if(command.getName().equalsIgnoreCase("skull")) {
+            //SKULL COMMAND
+            else if(command.getName().equalsIgnoreCase("skull")) {
                 if(args.length > 0) {
                     OfflinePlayer p = Bukkit.getOfflinePlayer(args[0]);
                     ItemStack item = new ItemStack(Material.SKULL_ITEM, 1, (short) SkullType.PLAYER.ordinal());
@@ -64,6 +65,8 @@ public class UtilityCommands implements CommandExecutor {
                     player.sendMessage(ChatColor.RED + "Please specify a player!");
                 }
             }
+
+
         }
         return false;
     }

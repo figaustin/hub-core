@@ -5,6 +5,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.*;
+import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.inventory.InventoryDragEvent;
 import org.bukkit.event.inventory.InventoryInteractEvent;
 import org.bukkit.event.inventory.InventoryMoveItemEvent;
@@ -70,6 +71,11 @@ public class CancelledEvents implements Listener {
 
     @EventHandler
     public void onInteract(InventoryInteractEvent event) {
+        event.setCancelled(true);
+    }
+
+    @EventHandler
+    public void onClick(InventoryClickEvent event) {
         event.setCancelled(true);
     }
 
