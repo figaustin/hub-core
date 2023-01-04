@@ -36,7 +36,7 @@ commands:
   gamemode:
     description: Change your gamemode
     permission: hub.gamemode
-  restartserver:
+  serverrestart:
     description: Restarts this server
     permission: hub.restart
   rename:
@@ -45,6 +45,22 @@ commands:
   namehistory:
     description: See a player's name history
     permission: hub.namehistory
+  gmc:
+    aliases: [gm0]
+    description: Sets your gamemode to creative
+    permission: hub.gmc
+  gms:
+    aliases: [gm1]
+    description: Sets your gamemode to survival
+    permission: hub.gms
+  gma:
+    aliases: [gm2]
+    description: Sets your gamemode to adventure
+    permission: hub.gma
+  gmsp:
+    aliases: [gm3]
+    description: Sets your gamemode to spectator
+    permission: hub.gmsp
 permissions:
   hub.*:
     description: Grants player access to all permissions
@@ -59,10 +75,14 @@ permissions:
       hub.setspawn: true
       hub.spawn: true
       hub.gamemode: true
-      hub.restart: true
+      hub.serverrestart: true
       hub.rename: true
       hub.rename.others: true
       hub.namehistory: true
+      hub.gmc: true
+      hub.gms: true
+      hub.gma: true
+      hub.gmsp: true
   hub.fly:
     description: Allows player to fly
   hub.speed:
@@ -83,7 +103,7 @@ permissions:
     description: Allows player to teleport to spawn
   hub.gamemode:
     description: Allows player to change their gamemode
-  hub.restart:
+  hub.serverrestart:
     description: Allows player to restart the server
   hub.rename:
     description: Allows player to give themselves a nickname
@@ -91,3 +111,11 @@ permissions:
     description: Allows player to rename other players
   hub.namehistory:
     description: Allows player to see a players name history
+  hub.gmc:
+    description: Allows a player to change their gamemode to creative
+  hub.gms:
+    description: Allows a player to change their gamemode to survival
+  hub.gma:
+    description: Allows a player to change their gamemode to adventure
+  hub.gmsp:
+    description: Allows a player to change their gamemode to spectator

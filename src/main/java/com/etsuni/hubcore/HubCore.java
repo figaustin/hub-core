@@ -1,8 +1,6 @@
 package com.etsuni.hubcore;
 
-import com.etsuni.hubcore.commands.SpawnCommands;
-import com.etsuni.hubcore.commands.UtilityCommands;
-import com.etsuni.hubcore.commands.WarpCommands;
+import com.etsuni.hubcore.commands.*;
 import com.etsuni.hubcore.events.CancelledEvents;
 import com.etsuni.hubcore.events.ChatEvents;
 import com.etsuni.hubcore.events.JoinLeaveEvents;
@@ -40,6 +38,8 @@ public final class HubCore extends JavaPlugin {
     private final UtilityCommands utilityCommands = new UtilityCommands();
     private final WarpCommands warpCommands = new WarpCommands(this);
     private final SpawnCommands spawnCommands = new SpawnCommands(this);
+    private final GamemodeCommands gamemodeCommands = new GamemodeCommands();
+    private final NameCommands nameCommands = new NameCommands(this);
 
     public static HubCore plugin;
 
@@ -59,6 +59,14 @@ public final class HubCore extends JavaPlugin {
         this.getCommand("warps").setExecutor(warpCommands);
         this.getCommand("setspawn").setExecutor(spawnCommands);
         this.getCommand("spawn").setExecutor(spawnCommands);
+        this.getCommand("rename").setExecutor(nameCommands);
+        this.getCommand("namehistory").setExecutor(nameCommands);
+        this.getCommand("gmc").setExecutor(gamemodeCommands);
+        this.getCommand("gms").setExecutor(gamemodeCommands);
+        this.getCommand("gma").setExecutor(gamemodeCommands);
+        this.getCommand("gmsp").setExecutor(gamemodeCommands);
+        //SERVER RESTART COMMAND
+
 
         this.getServer().getPluginManager().registerEvents(new ChatEvents(), this);
         this.getServer().getPluginManager().registerEvents(new CancelledEvents(), this);

@@ -42,6 +42,7 @@ public class JoinLeaveEvents implements Listener {
         } else {
             DBUtils dbUtils = new DBUtils(plugin);
             if(dbUtils.addPlayerToDB(player)){
+                dbUtils.addPlayersNewNameToDb(player, player.getDisplayName(), false);
                 player.sendMessage(ChatColor.translateAlternateColorCodes(
                         '&', plugin.getCfg().getString("settings.first_join_msg")
                                 .replace("%player%", player.getDisplayName())
