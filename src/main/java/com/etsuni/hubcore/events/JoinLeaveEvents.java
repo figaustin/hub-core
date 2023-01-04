@@ -3,6 +3,7 @@ package com.etsuni.hubcore.events;
 import com.etsuni.hubcore.HubCore;
 import com.etsuni.hubcore.HubScoreboard;
 import com.etsuni.hubcore.commands.CommandUtils;
+import me.clip.placeholderapi.PlaceholderAPI;
 import utils.DBUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -32,8 +33,11 @@ public class JoinLeaveEvents implements Listener {
 
         if(player.hasPlayedBefore()) {
             for(String s : plugin.getMotdConfig().getStringList("motd")) {
-                player.sendMessage(ChatColor.translateAlternateColorCodes('&',
-                        s.replace("%player%", player.getDisplayName())));
+                player.sendMessage(ChatColor.translateAlternateColorCodes('&', PlaceholderAPI.setPlaceholders(player, s)));
+            }
+            DBUtils dbUtils = new DBUtils(plugin);
+            if(!dbUtils.checkIfSameName(player)) {
+                dbUtils.addPlayersNewNameToDb(player, player.getName(), false);
             }
         } else {
             DBUtils dbUtils = new DBUtils(plugin);

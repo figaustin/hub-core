@@ -84,7 +84,24 @@ public class DBUtils {
             e.printStackTrace();
             return Optional.empty();
         }
+    }
 
+    public Boolean checkIfSameName(Player player) {
+        try(Connection conn = plugin.getDataSource().getConnection(); PreparedStatement statement = conn.prepareStatement(
+                "SELECT name FROM names WHERE player_id = ? "
+        )) {
+            statement.setLong(1, getPlayerDbId(player).getAsLong());
+            ResultSet resultSet = statement.executeQuery();
+            List<String> names = new ArrayList<>();
+            while(resultSet.next()) {
+                names.add(resultSet.getString("name"));
+            }
+
+            return names.contains(player.getName());
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return false;
+        }
     }
 
 }

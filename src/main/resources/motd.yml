@@ -1,5 +1,5 @@
 motd:
-  - 'Welcome back %player%'
+  - 'Welcome back %player_displayname%'
   - 'Website: server.com'
   - 'Discord: server.discord'
   - 'Store: server.store.com'

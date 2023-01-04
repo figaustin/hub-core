@@ -57,10 +57,6 @@ public class NameCommands implements CommandExecutor {
                     }
                 }
             }
-            else if(command.getName().equalsIgnoreCase("gameselector")) {
-                MenuManager menuManager = new MenuManager(plugin);
-                menuManager.openGameSelector(((Player) sender).getPlayer());
-            }
         }
 
         return false;
