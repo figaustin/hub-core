@@ -2,6 +2,8 @@ package com.etsuni.hubcore.menus;
 
 import com.etsuni.hubcore.HubCore;
 import me.clip.placeholderapi.PlaceholderAPI;
+import net.md_5.bungee.api.ProxyServer;
+import net.md_5.bungee.api.connection.ProxiedPlayer;
 import org.bukkit.*;
 import org.bukkit.configuration.Configuration;
 import org.bukkit.configuration.ConfigurationSection;
@@ -69,8 +71,14 @@ public class MenuManager {
 
         ConfigurationSection items = config.getConfigurationSection("lobbyselector.items");
 
+        ProxiedPlayer proxiedPlayer = ProxyServer.getInstance().getPlayer(player.getName());
         for(String item : items.getKeys(false)) {
-            ItemStack itemStack = new ItemStack(Material.valueOf(items.getString(item + ".item")));
+            ItemStack itemStack;
+            if(proxiedPlayer.getServer().getInfo().getName().equalsIgnoreCase(ChatColor.stripColor(items.getString(item + ".name")))) {
+                itemStack = new ItemStack(Material.valueOf(config.getString("lobbyselector.current_lobby_item")));
+            } else {
+                itemStack = new ItemStack(Material.valueOf(config.getString("lobbyselector.other_lobbies_item")));
+            }
             ItemMeta meta = itemStack.getItemMeta();
             meta.setDisplayName(ChatColor.translateAlternateColorCodes('&', PlaceholderAPI.setPlaceholders(player, items.getString(item + ".name"))));
             List<String> lore = new ArrayList<>();

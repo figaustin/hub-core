@@ -36,9 +36,6 @@ commands:
   gamemode:
     description: Change your gamemode
     permission: hub.gamemode
-  serverrestart:
-    description: Restarts this server
-    permission: hub.restart
   rename:
     description: Set a nickname for a player
     permission: hub.rename
@@ -61,8 +58,6 @@ commands:
     aliases: [gm3]
     description: Sets your gamemode to spectator
     permission: hub.gmsp
-  gameselector:
-    description: Testing command
 permissions:
   hub.*:
     description: Grants player access to all permissions
