@@ -1,5 +1,6 @@
 package com.etsuni.hubcore.commands;
 
+import com.etsuni.hubcore.HubCore;
 import org.bukkit.*;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -10,6 +11,12 @@ import org.bukkit.inventory.meta.SkullMeta;
 
 public class UtilityCommands implements CommandExecutor {
 
+    private final HubCore plugin;
+
+    public UtilityCommands(HubCore instance) {
+        plugin = instance;
+    }
+
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
         if(sender instanceof Player) {
@@ -19,6 +26,8 @@ public class UtilityCommands implements CommandExecutor {
             if(command.getName().equalsIgnoreCase("fly")) {
                 player.setAllowFlight(true);
                 player.setFlying(true);
+                player.sendMessage(ChatColor.translateAlternateColorCodes('&', plugin.getMessagesConfig().getString("prefix") +
+                        plugin.getMessagesConfig().getString("fly")));
                 return true;
             }
 
@@ -28,26 +37,36 @@ public class UtilityCommands implements CommandExecutor {
                     try {
                         if (player.isFlying()) {
                             try {
-                                if (player.getFlySpeed() == Float.parseFloat(args[0])) {
-                                    player.sendMessage("same speed");
-                                }
                                 player.setFlySpeed(Float.parseFloat(args[0]));
+                                player.sendMessage(ChatColor.translateAlternateColorCodes('&',plugin.getMessagesConfig().getString("prefix") +
+                                        plugin.getMessagesConfig().getString("change_speed")
+                                        .replace("%speed%", args[0])));
                             } catch (NumberFormatException e) {
-                                player.sendMessage(ChatColor.RED + "Invalid number.");
+                                player.sendMessage(ChatColor.translateAlternateColorCodes('&', plugin.getMessagesConfig().getString("prefix") +
+                                        plugin.getMessagesConfig()
+                                        .getString("speed_invalid_number")));
                             }
                         } else {
                             try {
                                 player.setWalkSpeed(Float.parseFloat(args[0]));
+                                player.sendMessage(ChatColor.translateAlternateColorCodes('&',plugin.getMessagesConfig().getString("prefix") +
+                                        plugin.getMessagesConfig().getString("change_speed")
+                                        .replace("%speed%", args[0])));
                             } catch (NumberFormatException e) {
-                                player.sendMessage(ChatColor.RED + "Invalid number.");
+                                player.sendMessage(ChatColor.translateAlternateColorCodes('&', plugin.getMessagesConfig().getString("prefix") +
+                                        plugin.getMessagesConfig()
+                                        .getString("speed_invalid_number")));
                             }
                         }
                         return true;
                     } catch (IllegalArgumentException e) {
-                        player.sendMessage(ChatColor.RED  + "Number is either too high or too low, please enter a value from 0.00 to 1.00");
+                        player.sendMessage(ChatColor.translateAlternateColorCodes('&', plugin.getMessagesConfig().getString("prefix") +
+                                plugin.getMessagesConfig()
+                                .getString("speed_too_high_or_too_low")));
                     }
                 } else {
-                    player.sendMessage(ChatColor.RED + "Please specify an amount!");
+                    player.sendMessage(ChatColor.translateAlternateColorCodes('&', plugin.getMessagesConfig().getString("prefix") +
+                            plugin.getMessagesConfig().getString("speed_no_amount")));
                 }
             }
 
@@ -61,8 +80,13 @@ public class UtilityCommands implements CommandExecutor {
                     item.setItemMeta(meta);
                     player.getInventory().addItem(item);
                     player.updateInventory();
+                    player.sendMessage(ChatColor.translateAlternateColorCodes('&', plugin.getMessagesConfig().getString("prefix") +
+                            plugin.getMessagesConfig()
+                            .getString("skull").replace("%player%", player.getName())));
                 } else {
-                    player.sendMessage(ChatColor.RED + "Please specify a player!");
+                    player.sendMessage(ChatColor.translateAlternateColorCodes('&', plugin.getMessagesConfig().getString("prefix") +
+                            plugin.getMessagesConfig()
+                            .getString("skull_specify_player")));
                 }
             }
 

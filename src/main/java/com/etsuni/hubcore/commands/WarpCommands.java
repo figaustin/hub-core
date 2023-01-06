@@ -10,10 +10,10 @@ import org.bukkit.configuration.Configuration;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Player;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
-import static com.etsuni.hubcore.HubCore.plugin;
 
 public class WarpCommands implements CommandExecutor {
 
@@ -34,10 +34,14 @@ public class WarpCommands implements CommandExecutor {
                     ConfigurationSection section = config.createSection("warps." + args[0]);
                     section.set("location", CommandUtils.makeLocationString(location));
                     plugin.saveCfgs();
-                    sender.sendMessage(ChatColor.GREEN + "Set " + args[0] + "as a new warp!");
+                    sender.sendMessage(ChatColor.translateAlternateColorCodes('&', plugin.getMessagesConfig().getString("prefix") +
+                            plugin.getMessagesConfig()
+                            .getString("set_warp").replace("%warpname%", args[0])));
                     return true;
                 } else {
-                    sender.sendMessage(ChatColor.RED + "Please enter a name for the warp");
+                    sender.sendMessage(ChatColor.translateAlternateColorCodes('&', plugin.getMessagesConfig().getString("prefix") +
+                            plugin.getMessagesConfig()
+                            .getString("set_warp_error")));
                     return false;
                 }
             }
@@ -51,12 +55,16 @@ public class WarpCommands implements CommandExecutor {
                     {
                         config.set("warps." + args[0], null);
                         plugin.saveCfgs();
-                        sender.sendMessage(ChatColor.GREEN + "Deleted " + args[0] + " warp!");
+                        sender.sendMessage(ChatColor.translateAlternateColorCodes('&', plugin.getMessagesConfig().getString("prefix") +
+                                plugin.getMessagesConfig()
+                                .getString("del_warp").replace("%warpname", args[0])));
                         return true;
                     }
 
                 } else {
-                    sender.sendMessage(ChatColor.RED + "Please specify a warp");
+                    sender.sendMessage(ChatColor.translateAlternateColorCodes('&', plugin.getMessagesConfig().getString("prefix") +
+                            plugin.getMessagesConfig()
+                            .getString("set_warp_error")));
                     return false;
                 }
             }
@@ -70,12 +78,16 @@ public class WarpCommands implements CommandExecutor {
                     {
                         ((Player) sender).teleport(
                                 CommandUtils.parseLocationString(plugin.getWarpsConfig().getString("warps." + args[0] + ".location")));
-                        sender.sendMessage(ChatColor.GREEN + "Warped to " + args[0] + "!");
+                        sender.sendMessage(ChatColor.translateAlternateColorCodes('&', plugin.getMessagesConfig().getString("prefix") +
+                                plugin.getMessagesConfig()
+                                .getString("warp").replace("%warpname%", args[0])));
                         return true;
                     }
 
                 } else {
-                    sender.sendMessage(ChatColor.RED + "Please specify a warp");
+                    sender.sendMessage(ChatColor.translateAlternateColorCodes('&', plugin.getMessagesConfig().getString("prefix") +
+                            plugin.getMessagesConfig()
+                            .getString("set_warp_error")));
                     return false;
                 }
             }
@@ -87,10 +99,20 @@ public class WarpCommands implements CommandExecutor {
                     return false;
                 }
                 Set<String> warps = config.getConfigurationSection("warps").getKeys(false);
-                sender.sendMessage(ChatColor.GOLD + "Warps List:");
-                for(String w : warps) {
-                    sender.sendMessage(ChatColor.GREEN + w);
+                List<String> warpNames = new ArrayList<>(warps);
+
+                for(String str : plugin.getMessagesConfig().getStringList("warps")) {
+                    if(str.contains("%warps%")) {
+                        for(String warp : warpNames) {
+                            sender.sendMessage(ChatColor.translateAlternateColorCodes('&', plugin.getMessagesConfig().getString("prefix") +
+                                    str.replace("%warps%", warp)));
+                        }
+                    } else {
+                        sender.sendMessage(ChatColor.translateAlternateColorCodes('&', plugin.getMessagesConfig().getString("prefix") +
+                                str));
+                    }
                 }
+
                 return true;
             }
 

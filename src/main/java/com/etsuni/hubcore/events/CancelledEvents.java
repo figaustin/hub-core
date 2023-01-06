@@ -1,5 +1,7 @@
 package com.etsuni.hubcore.events;
 
+import com.etsuni.hubcore.HubCore;
+import com.etsuni.hubcore.commands.CommandUtils;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -13,6 +15,12 @@ import org.bukkit.event.player.PlayerDropItemEvent;
 import org.bukkit.event.weather.WeatherChangeEvent;
 
 public class CancelledEvents implements Listener {
+
+    private final HubCore plugin;
+
+    public CancelledEvents(HubCore instance) {
+        plugin = instance;
+    }
 
     @EventHandler
     public void onDamage(EntityDamageEvent event) {
@@ -45,9 +53,7 @@ public class CancelledEvents implements Listener {
     public void onDeath(PlayerDeathEvent event) {
         event.setDeathMessage(null);
         event.getEntity().spigot().respawn();
-
-        //TELEPORT TO SPAWN THAT IS SET IN THE CONFIG
-        event.getEntity().getPlayer();
+        event.getEntity().getPlayer().teleport(CommandUtils.parseLocationString(plugin.getCfg().getString("spawn.location")));
     }
 
     @EventHandler
@@ -55,7 +61,7 @@ public class CancelledEvents implements Listener {
         Entity entity = event.getEntity();
 
         if(entity instanceof Player) {
-            //TP TO SPAWN
+            event.getEntity().teleport(CommandUtils.parseLocationString(plugin.getCfg().getString("spawn.location")));
         }
     }
 

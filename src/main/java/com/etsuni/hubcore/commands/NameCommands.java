@@ -1,7 +1,7 @@
 package com.etsuni.hubcore.commands;
 
 import com.etsuni.hubcore.HubCore;
-import com.etsuni.hubcore.menus.MenuManager;
+import org.bukkit.ChatColor;
 import utils.DBUtils;
 import utils.PlayerName;
 import org.bukkit.Bukkit;
@@ -10,6 +10,7 @@ import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -29,6 +30,9 @@ public class NameCommands implements CommandExecutor {
                     ((Player) sender).setDisplayName(name);
                     DBUtils dbUtils = new DBUtils(plugin);
                     dbUtils.addPlayersNewNameToDb(((Player) sender).getPlayer(), name, true);
+                    sender.sendMessage(ChatColor.translateAlternateColorCodes('&',plugin.getMessagesConfig().getString("prefix") +
+                            plugin.getMessagesConfig()
+                            .getString("change_name").replace("%name%", name)));
                     return true;
                 }
             }
@@ -39,21 +43,37 @@ public class NameCommands implements CommandExecutor {
                         Optional<List<PlayerName>> namesList = dbUtils.getPlayerNameHistory(Bukkit.getPlayer(args[0]));
                         sender.sendMessage("Name history for " + args[0]);
 
-                        String allNames = "All Names: ";
+                        List<String> allNames = new ArrayList<>();
                         for(PlayerName name : namesList.get()) {
-                            allNames = allNames.concat(name.getName() + ", ");
+                            allNames.add(name.getName());
                         }
 
-                        String nickNames = "10 recent nicknames: ";
+                        List<String> nickNames = new ArrayList<>();
                         int counter = 0;
                         for(PlayerName name : namesList.get()) {
                             if(name.getNickname() && counter < 10) {
-                                nickNames = nickNames.concat(name.getName() + ", ");
+                                nickNames.add(name.getName());
                                 counter++;
                             }
                         }
-                        sender.sendMessage(allNames);
-                        sender.sendMessage(nickNames);
+                        for(String str : plugin.getMessagesConfig().getStringList("name_history")) {
+                            if(str.contains("%player%")) {
+                                sender.sendMessage(ChatColor.translateAlternateColorCodes('&', plugin.getMessagesConfig().getString("prefix") +
+                                        str.replace("%player%", ((Player) sender).getDisplayName())));
+                            }
+                            else if(str.contains("%allnames%")) {
+                                sender.sendMessage(ChatColor.translateAlternateColorCodes('&',plugin.getMessagesConfig().getString("prefix") +
+                                        str.replace("%allnames%", allNames.toString()
+                                        .replace("[", "")
+                                        .replace("]", ""))));
+                            }
+                            else if(str.contains("%nicknames%")) {
+                                sender.sendMessage(ChatColor.translateAlternateColorCodes('&',plugin.getMessagesConfig().getString("prefix") +
+                                        str.replace("%nicknames%", nickNames.toString()
+                                        .replace("[", "")
+                                        .replace("]", ""))));
+                            }
+                        }
                     }
                 }
             }

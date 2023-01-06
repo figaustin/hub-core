@@ -37,11 +37,13 @@ public final class HubCore extends JavaPlugin {
     private FileConfiguration config;
     private File menusFile;
     private FileConfiguration menusConfig;
+    private File messagesFile;
+    private FileConfiguration messagesConfig;
 
-    private final UtilityCommands utilityCommands = new UtilityCommands();
+    private final UtilityCommands utilityCommands = new UtilityCommands(this);
     private final WarpCommands warpCommands = new WarpCommands(this);
     private final SpawnCommands spawnCommands = new SpawnCommands(this);
-    private final GamemodeCommands gamemodeCommands = new GamemodeCommands();
+    private final GamemodeCommands gamemodeCommands = new GamemodeCommands(this);
     private final NameCommands nameCommands = new NameCommands(this);
 
     public static HubCore plugin;
@@ -73,7 +75,7 @@ public final class HubCore extends JavaPlugin {
 
 
         this.getServer().getPluginManager().registerEvents(new ChatEvents(), this);
-        this.getServer().getPluginManager().registerEvents(new CancelledEvents(), this);
+        this.getServer().getPluginManager().registerEvents(new CancelledEvents(this), this);
         this.getServer().getPluginManager().registerEvents(new JoinLeaveEvents(this), this);
         this.getServer().getPluginManager().registerEvents(new MenuEvent(this), this);
 
@@ -214,7 +216,19 @@ public final class HubCore extends JavaPlugin {
             e.printStackTrace();
         }
 
+        messagesFile = new File(getDataFolder(), "messages.yml");
+        if(!messagesFile.exists()) {
+            messagesFile.getParentFile().mkdirs();
+            saveResource("messages.yml", false);
+        }
 
+        messagesConfig = new YamlConfiguration();
+
+        try {
+            messagesConfig.load(messagesFile);
+        } catch (IOException | InvalidConfigurationException e) {
+            e.printStackTrace();
+        }
 
     }
 
@@ -238,11 +252,19 @@ public final class HubCore extends JavaPlugin {
         return this.menusConfig;
     }
 
+    public FileConfiguration getMessagesConfig() {
+        return this.messagesConfig;
+    }
+
 
     public void saveCfgs() {
         try {
             motdConfig.save(motdFile);
             warpsConfig.save(warpsFile);
+            config.save(configFile);
+            scoreboardConfig.save(scoreboardFile);
+            messagesConfig.save(messagesFile);
+            menusConfig.save(menusFile);
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
