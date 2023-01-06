@@ -21,6 +21,7 @@ public class SpawnCommands implements CommandExecutor {
             if(command.getName().equalsIgnoreCase("setspawn")) {
                 Location loc = ((Player) sender).getLocation();
                 plugin.getCfg().set("spawn.location", CommandUtils.makeLocationString(loc));
+                plugin.saveCfgs();
                 sender.sendMessage(ChatColor.translateAlternateColorCodes('&',plugin.getMessagesConfig().getString("prefix") +
                         plugin.getMessagesConfig().getString("set_spawn")
                         .replace("%location%", "X: " + loc.getX() + " Y: " + loc.getY() + " Z: " + loc.getZ())));

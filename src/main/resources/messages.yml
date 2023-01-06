@@ -10,6 +10,7 @@ name_history:
 set_spawn: 'Set spawn to %location%'
 tp_to_spawn: 'Teleported to spawn'
 fly: 'You can now fly'
+disable_fly: 'You are no longer flying.'
 change_speed: 'Changed speed to %speed%'
 speed_invalid_number: '&cInvalid number.'
 speed_too_high_or_too_low: '&cNumber is either too high or too low, please enter a value from 0.00 to 1.00'

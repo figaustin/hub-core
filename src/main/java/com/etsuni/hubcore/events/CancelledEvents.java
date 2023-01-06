@@ -53,7 +53,10 @@ public class CancelledEvents implements Listener {
     public void onDeath(PlayerDeathEvent event) {
         event.setDeathMessage(null);
         event.getEntity().spigot().respawn();
-        event.getEntity().getPlayer().teleport(CommandUtils.parseLocationString(plugin.getCfg().getString("spawn.location")));
+        if(plugin.getCfg().getString("spawn.location") != null) {
+            event.getEntity().teleport(CommandUtils.parseLocationString(plugin.getCfg().getString("spawn.location")));
+        }
+
     }
 
     @EventHandler
@@ -61,7 +64,9 @@ public class CancelledEvents implements Listener {
         Entity entity = event.getEntity();
 
         if(entity instanceof Player) {
-            event.getEntity().teleport(CommandUtils.parseLocationString(plugin.getCfg().getString("spawn.location")));
+            if(plugin.getCfg().getString("spawn.location") != null) {
+                event.getEntity().teleport(CommandUtils.parseLocationString(plugin.getCfg().getString("spawn.location")));
+            }
         }
     }
 

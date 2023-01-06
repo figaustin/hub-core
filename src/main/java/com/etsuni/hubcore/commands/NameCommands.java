@@ -2,8 +2,8 @@ package com.etsuni.hubcore.commands;
 
 import com.etsuni.hubcore.HubCore;
 import org.bukkit.ChatColor;
-import utils.DBUtils;
-import utils.PlayerName;
+import com.etsuni.hubcore.utils.DBUtils;
+import com.etsuni.hubcore.utils.PlayerName;
 import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;

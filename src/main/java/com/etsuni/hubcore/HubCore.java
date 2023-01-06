@@ -5,23 +5,23 @@ import com.etsuni.hubcore.events.CancelledEvents;
 import com.etsuni.hubcore.events.ChatEvents;
 import com.etsuni.hubcore.events.JoinLeaveEvents;
 import com.etsuni.hubcore.events.KeepDayTime;
-import com.etsuni.hubcore.menus.MenuEvent;
+import com.etsuni.hubcore.menus.PlayerMenuUtility;
+import com.etsuni.hubcore.menus.listeners.MenuListener;
 import com.mysql.cj.jdbc.MysqlConnectionPoolDataSource;
 import com.mysql.cj.jdbc.MysqlDataSource;
-import org.bukkit.Bukkit;
 import org.bukkit.configuration.InvalidConfigurationException;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
+import org.bukkit.entity.Player;
 import org.bukkit.plugin.java.JavaPlugin;
-import org.bukkit.scheduler.BukkitScheduler;
 import org.bukkit.scheduler.BukkitTask;
 
 import javax.sql.DataSource;
 import java.io.*;
 import java.sql.Connection;
-import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
+import java.util.HashMap;
 import java.util.logging.Level;
 import java.util.stream.Collectors;
 
@@ -45,6 +45,8 @@ public final class HubCore extends JavaPlugin {
     private final SpawnCommands spawnCommands = new SpawnCommands(this);
     private final GamemodeCommands gamemodeCommands = new GamemodeCommands(this);
     private final NameCommands nameCommands = new NameCommands(this);
+
+    private static final HashMap<Player, PlayerMenuUtility> playerMenuUtilityMap = new HashMap<>();
 
     public static HubCore plugin;
 
@@ -70,14 +72,13 @@ public final class HubCore extends JavaPlugin {
         this.getCommand("gms").setExecutor(gamemodeCommands);
         this.getCommand("gma").setExecutor(gamemodeCommands);
         this.getCommand("gmsp").setExecutor(gamemodeCommands);
-        this.getCommand("gameselector").setExecutor(nameCommands);
         //SERVER RESTART COMMAND
 
 
         this.getServer().getPluginManager().registerEvents(new ChatEvents(), this);
         this.getServer().getPluginManager().registerEvents(new CancelledEvents(this), this);
         this.getServer().getPluginManager().registerEvents(new JoinLeaveEvents(this), this);
-        this.getServer().getPluginManager().registerEvents(new MenuEvent(this), this);
+        this.getServer().getPluginManager().registerEvents(new MenuListener(this), this);
 
         dayTime();
 
@@ -267,6 +268,20 @@ public final class HubCore extends JavaPlugin {
             menusConfig.save(menusFile);
         } catch (IOException e) {
             throw new RuntimeException(e);
+        }
+    }
+
+    public PlayerMenuUtility getPlayerMenuUtility(Player player) {
+        PlayerMenuUtility playerMenuUtility;
+
+        if(playerMenuUtilityMap.containsKey(player)) {
+            return playerMenuUtilityMap.get(player);
+        }
+        else {
+            playerMenuUtility = new PlayerMenuUtility(player);
+            playerMenuUtilityMap.put(player, playerMenuUtility);
+
+            return playerMenuUtility;
         }
     }
 

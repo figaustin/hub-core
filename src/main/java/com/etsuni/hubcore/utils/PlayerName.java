@@ -1,4 +1,4 @@
-package utils;
+package com.etsuni.hubcore.utils;
 
 import java.sql.Timestamp;
 

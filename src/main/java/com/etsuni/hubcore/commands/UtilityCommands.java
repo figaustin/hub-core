@@ -1,6 +1,7 @@
 package com.etsuni.hubcore.commands;
 
 import com.etsuni.hubcore.HubCore;
+import net.md_5.bungee.protocol.packet.Chat;
 import org.bukkit.*;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -24,10 +25,17 @@ public class UtilityCommands implements CommandExecutor {
 
             //FLY COMMAND
             if(command.getName().equalsIgnoreCase("fly")) {
-                player.setAllowFlight(true);
-                player.setFlying(true);
-                player.sendMessage(ChatColor.translateAlternateColorCodes('&', plugin.getMessagesConfig().getString("prefix") +
-                        plugin.getMessagesConfig().getString("fly")));
+                if(player.getAllowFlight()) {
+                    player.setFlying(false);
+                    player.setAllowFlight(false);
+                    player.sendMessage(ChatColor.translateAlternateColorCodes('&', plugin.getMessagesConfig()
+                            .getString("prefix") + plugin.getMessagesConfig().getString("disable_fly")));
+                } else {
+                    player.setAllowFlight(true);
+                    player.setFlying(true);
+                    player.sendMessage(ChatColor.translateAlternateColorCodes('&', plugin.getMessagesConfig().getString("prefix") +
+                            plugin.getMessagesConfig().getString("fly")));
+                }
                 return true;
             }
 
