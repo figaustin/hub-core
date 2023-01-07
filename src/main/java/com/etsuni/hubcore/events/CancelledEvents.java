@@ -63,6 +63,10 @@ public class CancelledEvents implements Listener {
     public void onVoidDamage(EntityDamageEvent event) {
         Entity entity = event.getEntity();
 
+        if(!event.getCause().equals(EntityDamageEvent.DamageCause.VOID)) {
+            return;
+        }
+
         if(entity instanceof Player) {
             if(plugin.getCfg().getString("spawn.location") != null) {
                 event.getEntity().teleport(CommandUtils.parseLocationString(plugin.getCfg().getString("spawn.location")));

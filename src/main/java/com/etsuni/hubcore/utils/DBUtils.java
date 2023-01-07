@@ -50,6 +50,9 @@ public class DBUtils {
         try(Connection conn = plugin.getDataSource().getConnection(); PreparedStatement statement = conn.prepareStatement(
                 "INSERT INTO names(name,is_nick_name,created_at,player_id) VALUES(?,?,?,?);"
         )) {
+            if(!getPlayerDbId(player).isPresent()){
+                return false;
+            }
             statement.setString(1, name);
             statement.setBoolean(2, nickname);
             statement.setTimestamp(3, Timestamp.valueOf(LocalDateTime.now()));
@@ -66,27 +69,34 @@ public class DBUtils {
         try(Connection conn = plugin.getDataSource().getConnection(); PreparedStatement statement = conn.prepareStatement(
                 "SELECT * FROM names WHERE player_id = ? ORDER BY id DESC"
         )) {
-            statement.setLong(1, getPlayerDbId(player).getAsLong());
-            ResultSet resultSet = statement.executeQuery();
-            List<PlayerName> names = new ArrayList<>();
-            while(resultSet.next()) {
-                names.add(
-                        new PlayerName(resultSet.getString("name"),
-                                resultSet.getBoolean("is_nick_name"),
-                                resultSet.getTimestamp("created_at"))
-                );
+            if(getPlayerDbId(player).isPresent()) {
+                statement.setLong(1, getPlayerDbId(player).getAsLong());
+                ResultSet resultSet = statement.executeQuery();
+                List<PlayerName> names = new ArrayList<>();
+                while (resultSet.next()) {
+                    names.add(
+                            new PlayerName(resultSet.getString("name"),
+                                    resultSet.getBoolean("is_nick_name"),
+                                    resultSet.getTimestamp("created_at"))
+                    );
+                }
+
+                return Optional.of(names);
             }
-            return Optional.of(names);
         } catch (SQLException e) {
             e.printStackTrace();
             return Optional.empty();
         }
+        return Optional.empty();
     }
 
     public Boolean checkIfSameName(Player player) {
         try(Connection conn = plugin.getDataSource().getConnection(); PreparedStatement statement = conn.prepareStatement(
                 "SELECT name FROM names WHERE player_id = ? "
         )) {
+            if(!getPlayerDbId(player).isPresent()) {
+                return true;
+            }
             statement.setLong(1, getPlayerDbId(player).getAsLong());
             ResultSet resultSet = statement.executeQuery();
             List<String> names = new ArrayList<>();
