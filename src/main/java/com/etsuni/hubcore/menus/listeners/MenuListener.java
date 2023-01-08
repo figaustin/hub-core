@@ -23,17 +23,19 @@ public class MenuListener implements Listener {
     public void onInvClick(InventoryClickEvent event) {
         Player player = (Player) event.getWhoClicked();
 
+        if(event.getClickedInventory() == null) {
+            return;
+        }
+
         InventoryHolder holder = event.getClickedInventory().getHolder();
 
         if(holder instanceof Menu) {
-
-            event.setCancelled(true);
-
             if(event.getCurrentItem() == null) {return;}
 
             Menu menu = (Menu) holder;
 
             menu.handleMenu(event);
+            event.setCancelled(true);
         }
     }
 

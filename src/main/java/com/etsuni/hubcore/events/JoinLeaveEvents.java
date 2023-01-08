@@ -39,10 +39,12 @@ public class JoinLeaveEvents implements Listener {
             player.teleport(CommandUtils.parseLocationString(plugin.getCfg().getString("spawn.location")));
         }
 
+        for(String s : plugin.getMotdConfig().getStringList("motd")) {
+            player.sendMessage(ChatColor.translateAlternateColorCodes('&', PlaceholderAPI.setPlaceholders(player, s)));
+        }
+        
         if(player.hasPlayedBefore()) {
-            for(String s : plugin.getMotdConfig().getStringList("motd")) {
-                player.sendMessage(ChatColor.translateAlternateColorCodes('&', PlaceholderAPI.setPlaceholders(player, s)));
-            }
+
             DBUtils dbUtils = new DBUtils(plugin);
             if(!dbUtils.checkIfSameName(player)) {
                 dbUtils.addPlayersNewNameToDb(player, player.getName(), false);

@@ -29,4 +29,5 @@ lobbyselector:
       name: '&6Lobby 1'
       is_player_head: false
       command: '/server lobby1'
+      id: 1
 

@@ -2,13 +2,13 @@ package com.etsuni.hubcore.menus;
 
 import com.etsuni.hubcore.HubCore;
 import me.clip.placeholderapi.PlaceholderAPI;
-import net.md_5.bungee.api.ProxyServer;
-import net.md_5.bungee.api.connection.ProxiedPlayer;
+import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.SkullType;
 import org.bukkit.configuration.Configuration;
 import org.bukkit.configuration.ConfigurationSection;
+import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
@@ -38,7 +38,18 @@ public class LobbySelectorMenu extends Menu{
 
     @Override
     public void handleMenu(InventoryClickEvent event) {
+        Player player = (Player) event.getWhoClicked();
+        Configuration config = plugin.getMenusConfig();
+        int slot = event.getSlot();
+        Bukkit.broadcastMessage("slot: " + slot);
+        ConfigurationSection items = config.getConfigurationSection("lobbyselector.items");
 
+        for (String item : items.getKeys(false)) {
+            if (slot == items.getInt(item + ".position")) {
+                player.chat(items.getString(item + ".command"));
+                player.closeInventory();
+            }
+        }
     }
 
     @Override
@@ -47,7 +58,7 @@ public class LobbySelectorMenu extends Menu{
         ConfigurationSection items = config.getConfigurationSection("lobbyselector.items");
 
         for (String item : items.getKeys(false)) {
-            ItemStack itemStack = new ItemStack(Material.valueOf(items.getString(item + ".item")));
+            ItemStack itemStack = new ItemStack(Material.valueOf(items.getString(item + ".item")), 1, (short) items.getInt(item + ".id"));
             ItemMeta meta;
             if (items.getBoolean(item + ".is_player_head")) {
                 itemStack = new ItemStack(Material.SKULL_ITEM, 1, (short) SkullType.PLAYER.ordinal());

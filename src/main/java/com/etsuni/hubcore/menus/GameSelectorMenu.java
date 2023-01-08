@@ -44,11 +44,8 @@ public class GameSelectorMenu extends Menu {
 
         for (String item : items.getKeys(false)) {
             if (slot == items.getInt(item + ".position")) {
-                if(config.getString(item + ".command") != null) {
-                    player.performCommand(items.getString(item + ".command"));
-                    player.closeInventory();
-                }
-
+                player.chat(items.getString(item + ".command"));
+                player.closeInventory();
             }
         }
     }
@@ -60,7 +57,7 @@ public class GameSelectorMenu extends Menu {
         ConfigurationSection items = config.getConfigurationSection("gameselector.items");
 
         for (String item : items.getKeys(false)) {
-            ItemStack itemStack = new ItemStack(Material.valueOf(items.getString(item + ".item")));
+            ItemStack itemStack = new ItemStack(Material.valueOf(items.getString(item + ".item")), 1, (short) items.getInt(item + ".id"));
             ItemMeta meta;
             if (items.getBoolean(item + ".is_player_head")) {
                 itemStack = new ItemStack(Material.SKULL_ITEM, 1, (short) SkullType.PLAYER.ordinal());
