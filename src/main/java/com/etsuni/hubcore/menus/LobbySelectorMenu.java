@@ -41,7 +41,6 @@ public class LobbySelectorMenu extends Menu{
         Player player = (Player) event.getWhoClicked();
         Configuration config = plugin.getMenusConfig();
         int slot = event.getSlot();
-        Bukkit.broadcastMessage("slot: " + slot);
         ConfigurationSection items = config.getConfigurationSection("lobbyselector.items");
 
         for (String item : items.getKeys(false)) {
